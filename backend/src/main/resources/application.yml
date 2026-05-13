@@ -1,0 +1,87 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/nihongo_platform?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:nihongo_user}
+    password: ${DB_PASSWORD:nihongo_pass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID:your-facebook-app-id}
+            client-secret: ${FACEBOOK_CLIENT_SECRET:your-facebook-app-secret}
+            scope:
+              - email
+              - public_profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          facebook:
+            authorization-uri: https://www.facebook.com/v18.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v18.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/v18.0/me?fields=id,name,email,picture
+            user-name-attribute: id
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:NihongoPlatformSuperSecretKeyForJWTMustBe256BitsLongAtLeast}
+    expiration-ms: ${JWT_EXPIRATION:86400000}  # 24 hours
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION:604800000}  # 7 days
+
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+
+  zoom:
+    account-id: ${ZOOM_ACCOUNT_ID:your-zoom-account-id}
+    client-id: ${ZOOM_CLIENT_ID:your-zoom-client-id}
+    client-secret: ${ZOOM_CLIENT_SECRET:your-zoom-client-secret}
+    api-base-url: https://api.zoom.us/v2
+    token-url: https://zoom.us/oauth/token
+    webhook-secret: ${ZOOM_WEBHOOK_SECRET:your-zoom-webhook-secret}
+
+  admin:
+    default-email: ${ADMIN_EMAIL:admin@nihongo.com}
+    default-password: ${ADMIN_PASSWORD:Admin@123!}
+    default-name: ${ADMIN_NAME:Platform Admin}
+
+logging:
+  level:
+    com.nihongo: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO

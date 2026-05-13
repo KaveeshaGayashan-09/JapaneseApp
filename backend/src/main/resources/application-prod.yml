@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:nihongo_platform}?useSSL=true&requireSSL=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "${BACKEND_URL}/login/oauth2/code/google"
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID}
+            client-secret: ${FACEBOOK_CLIENT_SECRET}
+            redirect-uri: "${BACKEND_URL}/login/oauth2/code/facebook"
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: 86400000
+    refresh-expiration-ms: 604800000
+  frontend-url: ${FRONTEND_URL}
+  zoom:
+    account-id: ${ZOOM_ACCOUNT_ID}
+    client-id: ${ZOOM_CLIENT_ID}
+    client-secret: ${ZOOM_CLIENT_SECRET}
+    api-base-url: https://api.zoom.us/v2
+    token-url: https://zoom.us/oauth/token
+    webhook-secret: ${ZOOM_WEBHOOK_SECRET}
+  admin:
+    default-email: ${ADMIN_EMAIL}
+    default-password: ${ADMIN_PASSWORD}
+    default-name: ${ADMIN_NAME:Platform Admin}
+
+logging:
+  level:
+    com.nihongo: INFO
+    org.springframework.security: WARN
