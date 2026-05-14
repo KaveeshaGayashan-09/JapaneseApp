@@ -41,22 +41,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String token        = jwtTokenProvider.generateToken(userId, email, role);
         String refreshToken = jwtTokenProvider.generateRefreshToken(userId);
 
-        String redirectPath;
-        if ("ADMIN".equals(role)) {
-            redirectPath = "/admin";
-        } else if (isNewUser || !hasProfile) {
-            redirectPath = "/register/complete";
-        } else {
-            redirectPath = "/dashboard";
-        }
-
         String redirectUrl = UriComponentsBuilder
-                .fromUriString(frontendUrl + redirectPath)
+                .fromUriString(frontendUrl + "/oauth/callback")
                 .queryParam("token", token)
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
 
-        log.info("OAuth2 success for user {} — redirecting to {}", email, redirectPath);
+        log.info("OAuth2 success for user {} — redirecting to /oauth/callback", email);
         response.sendRedirect(redirectUrl);
     }
 }

@@ -17,7 +17,7 @@ import { useAuthStore } from './stores/authStore'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Toaster position="top-right" toastOptions={{
         style: { background: '#1a1a2e', color: '#e8e8f0', border: '1px solid #9d4edd' }
       }} />

@@ -1,9 +1,11 @@
 spring:
+  dotenv:
+    directory: ../
   profiles:
     active: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/nihongo_platform?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://avnadmin:AVNS_Wr-DGmsMY8YckvPCnpm@hometutor-database1-hometutor-database1.h.aivencloud.com:15209/defaultdb?ssl-mode=REQUIRED
     username: ${DB_USERNAME:nihongo_user}
     password: ${DB_PASSWORD:nihongo_pass}
     driver-class-name: com.mysql.cj.jdbc.Driver
