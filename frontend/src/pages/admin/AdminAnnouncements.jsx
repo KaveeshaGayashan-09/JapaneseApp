@@ -10,8 +10,15 @@ export default function AdminAnnouncements() {
   const [form, setForm] = useState({ title:'', content:'' })
   const [saving, setSaving] = useState(false)
 
-  const fetch = () => api.get('/admin/announcements').then(({ data }) => setItems(data))
-  useEffect(() => { fetch() }, [])
+  const fetch = () => api.get('/admin/announcements')
+                          .then(({ data }) => {
+                            // Only set items if the data is an array
+                            setItems(Array.isArray(data) ? data : []);
+                          })
+                          .catch(err => {
+                            console.error("Fetch error:", err);
+                            setItems([]); // Reset to empty array on error to prevent crash
+                          });
 
   const handle = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
 
