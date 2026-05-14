@@ -42,7 +42,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String refreshToken = jwtTokenProvider.generateRefreshToken(userId);
 
         String redirectUrl = UriComponentsBuilder
-                .fromUriString(frontendUrl + "/oauth/callback")
+                .fromUriString(frontendUrl)
+                .path("/oauth/callback") // Safely joins with the base URL
                 .queryParam("token", token)
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
