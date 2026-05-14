@@ -14,15 +14,27 @@ export default function Dashboard() {
 
   useEffect(() => {
     const isVerified = user?.status === 'VERIFIED'
+
     const promises = [
       api.get('/student/announcements').catch(() => ({ data: [] })),
-      isVerified ? api.get('/student/sessions/upcoming').catch(() => ({ data: [] })) : Promise.resolve({ data: [] }),
+      isVerified
+        ? api.get('/student/sessions/upcoming').catch(() => ({ data: [] }))
+        : Promise.resolve({ data: [] }),
     ]
-    Promise.all(promises).then(([ann, sess]) => {
-      setAnnouncements(ann.data)
-      setSessions(sess.data)
-    }).finally(() => setLoading(false))
-  }, [])
+
+    Promise.all(promises)
+      .then(([ann, sess]) => {
+        // ALWAYS verify the data is an array before setting state
+        setAnnouncements(Array.isArray(ann.data) ? ann.data : [])
+        setSessions(Array.isArray(sess.data) ? sess.data : [])
+      })
+      .catch((err) => {
+        console.error("Critical fetch error:", err)
+        setAnnouncements([])
+        setSessions([])
+      })
+      .finally(() => setLoading(false))
+  }, [user?.status]) // Added status to dependency array for accuracy
 
   const initials = user?.name ? user.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?'
   const isPending  = user?.status === 'PENDING'
