@@ -10,11 +10,11 @@
       "destination": "https://japaneseapp.onrender.com/oauth2/:path*"
     },
     {
-      "source": "/login/:path*",
+      "source": "/login-backend/:path*",
       "destination": "https://japaneseapp.onrender.com/login/:path*"
     },
     {
-      "source": "/((?!api/|oauth2/|login/).*)",
+      "source": "/((?!api/|oauth2/|login-backend/).*)",
       "destination": "/index.html"
     }
   ]
